@@ -1,0 +1,8 @@
+feat: add authentication and user management features
+
+- Added @nestjs/config and @nestjs/typeorm dependencies for configuration and database integration.
+- Implemented user registration and login functionality with DTOs for validation.
+- Created a common module for hashing services, utilizing bcrypt for password hashing.
+- Enhanced user entity with additional fields and validation in create-user DTO.
+- Integrated TypeORM for SQLite database support and configured global validation pipes.
+- Updated REST client requests for user creation and authentication endpoints.
