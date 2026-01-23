@@ -1,3 +1,23 @@
 @baseUrl = http://localhost:3001
 
-GET {{{{baseUrl}}}}
+### Auth
+# @name authLogin
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "user@email.com",
+  "password": "senha123"
+}
+
+### Create user
+# @name createUser
+POST {{baseUrl}}/user
+Content-Type: application/json
+
+{
+  "name": "user1",
+  "email": "user1@email.com",
+  "password": "senha123"
+}
+ 
