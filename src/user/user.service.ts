@@ -41,7 +41,15 @@ export class UserService {
     return this.userRepository.findOneBy({ email });
   }
 
+  async findById(id: string) {
+    return this.userRepository.findOneBy({ id });
+  }
+
   save(user: User) {
     return this.userRepository.save(user);
+  }
+
+  async findAll(): Promise<User[]> {
+    return await this.userRepository.find();
   }
 }

@@ -5,6 +5,7 @@ import { UserModule } from 'src/user/user.module';
 import { CommonModule } from 'src/common/common.module';
 import { JwtModule, JwtModuleOptions } from '@nestjs/jwt';
 import { StringValue } from 'ms';
+import { JwtStrategy } from './jwt.strategy';
 
 @Module({
   imports: [
@@ -29,7 +30,7 @@ import { StringValue } from 'ms';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, JwtStrategy],
   exports: [],
 })
 export class AuthModule {}
