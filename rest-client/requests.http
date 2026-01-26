@@ -25,5 +25,15 @@ Content-Type: application/json
 ### Read one user
 # @name readOneUser
 GET {{baseUrl}}/user
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0MjY3YTAzZi0xZjczLTRhYjctOTlkMC02YmMyMzZmNGNjNzkiLCJlbWFpbCI6InVzZXIxQGVtYWlsLmNvbSIsImlhdCI6MTc2OTI3Mjc3MywiZXhwIjoxNzY5MzU5MTczfQ.jZuR2-p8suYeQsmkFB6C3OfpVPC49YMLQI6S5LRaxLk
- 
+Authorization: Bearer {{jwtToken}}
+
+### Update user
+# @name updateUser
+PATCH {{baseUrl}}/user/me
+Authorization: Bearer {{jwtToken}}
+Content-Type: application/json
+
+{
+  "name": "123123123",
+  "email": "user10@email.com"
+}
