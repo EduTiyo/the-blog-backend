@@ -13,27 +13,32 @@ import { User } from './entities/user.entity';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { UpdateUserDto } from './dto/update-user.dto';
 import type { AuthenticatedRequest } from 'src/auth/types/authenticated-request';
+import { UserResponseDto } from './dto/user-response.dto';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  create(@Body() dto: CreateUserDto): Promise<User> {
-    return this.userService.create(dto);
+  async create(@Body() dto: CreateUserDto): Promise<UserResponseDto> {
+    const user = await this.userService.create(dto);
+
+    return new UserResponseDto(user);
   }
 
   @UseGuards(JwtAuthGuard)
   @Get()
   findAll(@Req() req: AuthenticatedRequest): Promise<User[]> {
-    console.log(req.user);
-
     return this.userService.findAll();
   }
 
   @UseGuards(JwtAuthGuard)
   @Patch('me')
-  update(@Body() dto: UpdateUserDto, @Req() req: AuthenticatedRequest) {
-    return this.userService.update(req.user.id, dto);
+  async update(
+    @Body() dto: UpdateUserDto,
+    @Req() req: AuthenticatedRequest,
+  ): Promise<UserResponseDto> {
+    const user = await this.userService.update(req.user.id, dto);
+    return new UserResponseDto(user);
   }
 }
