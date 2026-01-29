@@ -6,41 +6,28 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
+  Req,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
-import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import type { AuthenticatedRequest } from 'src/auth/types/authenticated-request';
+import { PostResponseDto } from './dto/post-response.dto';
 
 @Controller('post')
 @ApiTags('Post')
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
-  @Post()
+  @UseGuards(JwtAuthGuard)
+  @Post('me')
   @ApiBody({ type: CreatePostDto })
-  create(@Body() createPostDto: CreatePostDto) {
-    return this.postService.create(createPostDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.postService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.postService.findOne(+id);
-  }
-
-  @Patch(':id')
-  @ApiBody({ type: UpdatePostDto })
-  update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
-    return this.postService.update(+id, updatePostDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.postService.remove(+id);
+  @ApiBearerAuth('access-token')
+  async create(@Req() req: AuthenticatedRequest, @Body() dto: CreatePostDto) {
+    const post = await this.postService.create(dto, req.user);
+    return new PostResponseDto(post);
   }
 }

@@ -12,7 +12,7 @@ export class CreatePostDto {
   @Length(10, 150, { message: 'Título precisa ter entre 10 e 150 caracteres' })
   @ApiProperty({
     description: 'Título do post',
-    example: 'Post 1',
+    example: 'Lorem ipsum dolor',
   })
   title: string;
 

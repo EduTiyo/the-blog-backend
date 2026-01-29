@@ -1,11 +1,15 @@
+import { User } from 'src/user/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
+  Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
+@Entity()
 export class Post {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -34,5 +38,7 @@ export class Post {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  // @ManyToOne()
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'author_id' })
+  author: User;
 }
