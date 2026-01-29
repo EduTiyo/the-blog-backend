@@ -35,7 +35,10 @@ export class CreatePostDto {
   content: string;
 
   @IsOptional()
-  @IsUrl({ require_tld: false })
+  @IsUrl(
+    { require_tld: false },
+    { message: 'URL do post deve ser uma URL válida' },
+  )
   @ApiPropertyOptional({
     description: 'Caminho para a imagem do post',
     example: 'http://localhost:3001/uploads/123',
