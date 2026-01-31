@@ -50,4 +50,17 @@ export class PostController {
     const posts = await this.postService.findAllOwned(req.user);
     return posts.map(post => new PostResponseDto(post));
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch('me/:id')
+  @ApiBody({ type: UpdatePostDto })
+  @ApiBearerAuth('access-token')
+  async update(
+    @Req() req: AuthenticatedRequest,
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() dto: UpdatePostDto,
+  ) {
+    const post = await this.postService.update({ id }, dto, req.user);
+    return new PostResponseDto(post);
+  }
 }

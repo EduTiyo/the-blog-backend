@@ -98,4 +98,19 @@ export class PostService {
 
     return created;
   }
+
+  async update(postData: Partial<Post>, dto: UpdatePostDto, author: User) {
+    if (Object.keys(dto).length === 0) {
+      throw new BadRequestException('Dados não enviados.');
+    }
+    const post = await this.findOneOwnedOrFail(postData, author);
+
+    post.title = dto.title ?? post.title;
+    post.content = dto.content ?? post.content;
+    post.excerpt = dto.excerpt ?? post.excerpt;
+    post.published = dto.published ?? post.published;
+    post.coverImageUrl = dto.coverImageUrl ?? post.coverImageUrl;
+
+    return this.postRepository.save(post);
+  }
 }
