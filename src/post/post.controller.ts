@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   Req,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { PostService } from './post.service';
 import { CreatePostDto } from './dto/create-post.dto';
@@ -29,5 +30,24 @@ export class PostController {
   async create(@Req() req: AuthenticatedRequest, @Body() dto: CreatePostDto) {
     const post = await this.postService.create(dto, req.user);
     return new PostResponseDto(post);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('me/:id')
+  @ApiBearerAuth('access-token')
+  async findOneOwned(
+    @Req() req: AuthenticatedRequest,
+    @Param('id', ParseUUIDPipe) id: string,
+  ) {
+    const post = await this.postService.findOneOwnedOrFail({ id }, req.user);
+    return new PostResponseDto(post);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('me')
+  @ApiBearerAuth('access-token')
+  async findAllOwned(@Req() req: AuthenticatedRequest) {
+    const posts = await this.postService.findAllOwned(req.user);
+    return posts.map(post => new PostResponseDto(post));
   }
 }
