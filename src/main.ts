@@ -36,24 +36,24 @@ async function bootstrap() {
 
   app.use(
     helmet({
-      crossOriginResourcePolicy: { policy: 'cross-origin'}
-    })
-  )
+      crossOriginResourcePolicy: { policy: 'cross-origin' },
+    }),
+  );
 
   const corsWhiteList = parseCorsWhitelist(process.env.CORS_WHITELIST ?? '');
-  
+
   app.enableCors({
     origin: (
       origin: string | undefined,
       callback: (...args: any[]) => void,
     ) => {
       if (!origin || corsWhiteList.includes(origin)) {
-        return callback(null, true)
+        return callback(null, true);
       }
 
-      return callback(new Error('Not allowed by CORS'), false)
-    }
-  })
+      return callback(new Error('Not allowed by CORS'), false);
+    },
+  });
 
   app.useGlobalPipes(
     new ValidationPipe({
